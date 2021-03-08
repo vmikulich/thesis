@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 const Shema = mongoose.Schema;
 
 const categoryShema = new Shema({
@@ -14,6 +14,6 @@ const categoryShema = new Shema({
     ref: 'users',
     type: Shema.Types.ObjectId
   }
-});
+})
 
-module.exports = mongoose.model('categories', categoryShema);
+module.exports = mongoose.model('categories', categoryShema)
