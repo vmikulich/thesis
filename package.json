@@ -10,7 +10,7 @@
     "administrator-install": "npm install --prefix administrator",
     "client": "npm run serve --prefix client",
     "administrator": "npm run serve --prefix administrator",
-    "dev-administrator": "concurrently \"npm run server\" \"npm run administrator\""
+    "dev": "concurrently \"npm run server\" \"npm run administrator\""
   },
   "keywords": [
     "express",

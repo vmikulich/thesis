@@ -7,6 +7,15 @@ module.exports = {
     const types = ['vue-modules', 'vue', 'normal-modules', 'normal']
     types.forEach(type => addStyleResource(config.module.rule('css').oneOf(type)))
   },
+  devServer: {
+    proxy: {
+      '^/api/*': {
+        target: 'http://localhost:5000',
+        ws: false,
+        changeOrigin: true
+      },
+    }
+  }
 };
 
 function addStyleResource (rule) {

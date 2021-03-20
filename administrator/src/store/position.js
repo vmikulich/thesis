@@ -7,7 +7,7 @@ export default {
   actions: {
     getPositions(context, payload) {
       context.commit('setLoading', true)
-      axios.get(`http://localhost:5000/api/administrator/position/${payload}`)
+      axios.get(`http://localhost:5000/api/position/${payload}`)
         .then(res => {
           context.commit('setCategoryPositions', res.data)
           context.commit('setLoading', false)
@@ -24,7 +24,7 @@ export default {
       fd.append('description', payload.description)
       fd.append('link', payload.link)
       fd.append('category', payload.category)
-      axios.post(`http://localhost:5000/api/administrator/position`, fd)
+      axios.post(`http://localhost:5000/api/position`, fd)
         .then((res) => {
           context.commit("addPosition", res.data)
           context.commit('setLoading', false)
@@ -38,11 +38,11 @@ export default {
       fd.append('name', payload.name)
       fd.append('cost', payload.cost)
       fd.append('category', payload.category)
-      return axios.patch(`http://localhost:5000/api/administrator/position/${payload._id}`, fd)
+      return axios.patch(`http://localhost:5000/api/position/${payload._id}`, fd)
       //  .then(() => context.commit('updatePosition', payload));
     },
     deletePosition(context, payload) {
-      axios.delete(`http://localhost:5000/api/administrator/position/${payload._id}`)
+      axios.delete(`http://localhost:5000/api/position/${payload._id}`)
         .then(() => context.commit('deletePosition', payload))
     }
   },

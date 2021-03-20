@@ -116,7 +116,7 @@ export default {
       setTimeout(() => {
         material.updateTextFields()
       }, 200)
-      axios.get(`http://localhost:5000/api/administrator/category/${this.id}`)
+      axios.get(`http://localhost:5000/api/category/${this.id}`)
         .then(res => {
           this.currName = res.data.name
           this.imagePreview = res.data.imageSrc

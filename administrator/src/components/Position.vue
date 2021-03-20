@@ -61,7 +61,7 @@
             <label for="pos-cost">Цена</label>
           </div>
         </div>
-      <div class="modal-footer">
+        <div class="modal-footer">
           <button 
             type="button"
             class="modal-action waves-effect waves-black btn-flat"
@@ -73,8 +73,9 @@
             :disabled="$v.$invalid"
             type="submit"
             class="modal-action btn waves-effect"
-          >Сохранить
-        </button>
+          >
+            Сохранить
+          </button>
         </div>
       </div>
     </form>
@@ -104,18 +105,6 @@ export default {
     }
   },
 
-  mounted() {
-    this.modal = this.initModal()
-    // this.$store.dispatch('getPositions', this.categoryId)
-    this.getPositions(this.categoryId)
-  },
-
-  beforeDestroy(){
-    this.modal.destroy()
-    // this.$store.commit('setCategoryPositions', [])
-    this.setCategoryPositions([])
-  },
-
   validations: {
     name: {
       required
@@ -136,6 +125,18 @@ export default {
     loading() {
       return this.loading
     }
+  },
+
+  mounted() {
+    this.modal = this.initModal()
+    // this.$store.dispatch('getPositions', this.categoryId)
+    this.getPositions(this.categoryId)
+  },
+
+  beforeDestroy(){
+    this.modal.destroy()
+    // this.$store.commit('setCategoryPositions', [])
+    this.setCategoryPositions([])
   },
 
   methods: {

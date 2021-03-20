@@ -3,11 +3,15 @@ import Vuex from 'vuex'
 import shared from './shared'
 import category from './category'
 import position from './position'
+import auth from './auth'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   modules: {
-    shared, category, position
+    shared,
+    category,
+    position,
+    auth
   }
 })
