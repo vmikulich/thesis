@@ -121,21 +121,16 @@ export default {
     ]),
     positions() {
       return this.categoryPositions || []
-    },
-    loading() {
-      return this.loading
     }
   },
 
   mounted() {
     this.modal = this.initModal()
-    // this.$store.dispatch('getPositions', this.categoryId)
     this.getPositions(this.categoryId)
   },
 
   beforeDestroy(){
     this.modal.destroy()
-    // this.$store.commit('setCategoryPositions', [])
     this.setCategoryPositions([])
   },
 
@@ -178,19 +173,15 @@ export default {
       }
       if (this.positionId) {
         position._id = this.positionId
-        // this.$store.dispatch('updatePosition', position)
         this.updatePosition(position)
           .then(() => {
-            // this.$store.dispatch('getPositions', this.categoryId)
             this.getPositions(this.categoryId)
             material.toast('Изменения сохранены')
             this.modal.close()
             this.resetForm()
           })
-        // this.$store.dispatch('getPositions', this.categoryId)
         this.getPositions(this.categoryId)
       } else {
-          // this.$store.dispatch('createPosition', position)
           this.createPosition(position)
             .then(() => {
               material.toast('Позиция создана')
@@ -203,7 +194,6 @@ export default {
       event.stopPropagation()
       const decision = window.confirm(`Вы уверены, что хотите удалить позицию ${position.name}`)
       if(decision) {
-        // this.$store.dispatch('deletePosition', position)
         this.deletePosition(position)
       }
     },

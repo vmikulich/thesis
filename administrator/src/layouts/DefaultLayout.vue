@@ -15,23 +15,56 @@
             {{ link.name }}
         </router-link>
       </li>
+      <li
+        class="waves-effect waves-orange bold last"
+        @click="onLogOut"
+      >
+        <a>Log out</a>
+      </li>
     </ul>
     <main class="content">
-      <slot />
+      <router-view />
     </main>
   </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   data() {
     return {
       links: [
         {
-          name: 'Ассортимент',
+          name: 'Overview',
+          path: '/overview'
+        },
+        {
+          name: 'Analytics',
+          path: '/analytics'
+        },
+        {
+          name: 'History',
+          path: '/history'
+        },
+        {
+          name: 'Add order',
+          path: '/order'
+        },
+        {
+          name: 'Assortment',
           path: '/categories'
         },
       ]
+    }
+  },
+
+  methods: {
+    ...mapActions([
+      'logout'
+    ]),
+    onLogOut () {
+      this.logout().then(() => this.$router.push('/login'))
     }
   }
 }

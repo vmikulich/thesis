@@ -92,7 +92,7 @@ export default {
       currName: '',
     }
   },
-  components: {Position},
+  components: { Position },
 
   validations: {
     currName: {

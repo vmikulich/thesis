@@ -31,7 +31,7 @@
       </div>
     </nav>
     <div class="auth-block">
-      <slot />
+      <router-view />
     </div>
   </div>
 </template>

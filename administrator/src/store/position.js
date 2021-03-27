@@ -15,30 +15,18 @@ export default {
     },
     createPosition(context, payload) {
       context.commit('setLoading', true)
-      const fd = new FormData()
-      if (payload.imageSrc) {
-        fd.append('image', payload.imageSrc, payload.imageSrc.name)
-      }
-      fd.append('name', payload.name)
-      fd.append('company', payload.company)
-      fd.append('description', payload.description)
-      fd.append('link', payload.link)
-      fd.append('category', payload.category)
-      axios.post(`http://localhost:5000/api/position`, fd)
+      axios.post(`http://localhost:5000/api/position`, payload)
         .then((res) => {
           context.commit("addPosition", res.data)
           context.commit('setLoading', false)
         })
     },
     updatePosition(context, payload) {
-      const fd = new FormData()
-      if (payload.imageSrc) {
-        fd.append('image', payload.imageSrc, payload.imageSrc.name)
+      const data = {
+        ...payload
       }
-      fd.append('name', payload.name)
-      fd.append('cost', payload.cost)
-      fd.append('category', payload.category)
-      return axios.patch(`http://localhost:5000/api/position/${payload._id}`, fd)
+      delete data._id
+      return axios.patch(`http://localhost:5000/api/position/${payload._id}`, data)
       //  .then(() => context.commit('updatePosition', payload));
     },
     deletePosition(context, payload) {

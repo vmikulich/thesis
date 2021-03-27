@@ -10,6 +10,7 @@ import 'materialize-css/dist/css/materialize.css'
 import M from 'materialize-css' 
 require('./assets/styles.min.css')
 
+Vue.config.productionTip = false
 Vue.use(Vuelidate)
 Vue.use(M)
 

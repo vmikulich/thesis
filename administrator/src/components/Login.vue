@@ -117,7 +117,7 @@ export default {
     onSubmit () {
       this.disabled = true
       this.login(this.form).then(() => {
-        this.$router.push('/categories')
+        this.$router.push('/overview')
       }).catch((e) => {
         material.toast(e.message, e)
       }).finally(() => {
