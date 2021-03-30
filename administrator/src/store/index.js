@@ -4,6 +4,7 @@ import shared from './shared'
 import category from './category'
 import position from './position'
 import auth from './auth'
+import order from './order'
 
 Vue.use(Vuex)
 
@@ -12,6 +13,7 @@ export default new Vuex.Store({
     shared,
     category,
     position,
-    auth
+    auth,
+    order
   }
 })

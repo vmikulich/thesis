@@ -5,7 +5,9 @@ import Category from '../components/Category.vue'
 import CategoryForm from '../components/CategoryForm.vue'
 import Login from '../components/Login.vue'
 import Registration from '../components/Registration.vue'
-import Order from '../components/Order.vue'
+import Order from '../components/Order/Order.vue'
+import OrderCategories from '../components/Order/OrderCategories.vue'
+import OrderPositions from '../components/Order/OrderPositions.vue'
 import Analytics from '../components/Analytics.vue'
 import History from '../components/History.vue'
 import Overview from '../components/Overview.vue'
@@ -60,8 +62,19 @@ const router = new VueRouter({
         },
         { 
           path: 'order',
-          name: 'Order',
-          component: Order
+          component: Order,
+          children: [
+            { 
+              path: '',
+              name: 'OrderCategories',
+              component: OrderCategories
+            },
+            { 
+              path: ':id',
+              name: 'OrderPositions',
+              component: OrderPositions
+            }
+          ]
         }
       ]
     },

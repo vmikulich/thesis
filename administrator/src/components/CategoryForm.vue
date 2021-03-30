@@ -2,9 +2,9 @@
   <div>
     <div class="page-title">
       <h4>
-        <router-link to="/categories">Категории</router-link>
+        <router-link to="/categories">Categories</router-link>
         <i class="material-icons">keyboard_arrow_right</i>
-        {{isNew ? 'Добавить' : 'Редактировать'}} категорию
+        {{isNew ? 'Add' : 'Create'}} category
       </h4>
       <span>
         <button 
@@ -25,7 +25,7 @@
             @blur="$v.currName.$touch()"
             v-model="currName"
           >
-          <label for="name">Название</label>
+          <label for="name">Name</label>
         </div>
         <div>
           <input 
@@ -40,7 +40,7 @@
             @click="triggerClick()"
           >
             <i class="material-icons left">backup</i>
-            Загрузить изображение
+            Upload image
           </button>
         </div>
         <div>
@@ -49,14 +49,14 @@
             class="`waves-effect waves-light btn `"
             :disabled="$v.$invalid"
           >
-            Сохранить изменения
+            Save changes
           </button>
         </div>
       </form>
       <div class="col s12 l4 center">
         <img 
           class="responsive-img h200" 
-          :src="'http://localhost:5000/'+imagePreview"
+          :src="imagePreview"
           v-if="imagePreview && id !== null"
         >
         <img 
@@ -75,8 +75,8 @@
 
 
 <script>
+import { mapActions, mapMutations, mapGetters } from 'vuex'
 import Position from './Position'
-import axios from 'axios'
 import { required } from 'vuelidate/lib/validators'
 import material from '../Materialize/material.js'
 
@@ -108,36 +108,39 @@ export default {
   },
 
   beforeDestroy(){
-    this.$store.commit('setCategoryById', null)
+    this.setCategoryById(null)
   },
 
   mounted() {
     if (this.$route.params.id) {
       setTimeout(() => {
         material.updateTextFields()
-      }, 200)
-      axios.get(`http://localhost:5000/api/category/${this.id}`)
-        .then(res => {
-          this.currName = res.data.name
-          this.imagePreview = res.data.imageSrc
-        });
-      // this.$store.dispatch("getCategoryById", this.id);
+      }, 500)
+      this.getCategoryById(this.id).then(() => {
+          this.currName = this.currentCategory.name
+          if (this.currentCategory.imageSrc) {
+            this.imagePreview = 'http://localhost:5000/' + this.currentCategory.imageSrc
+          }
+        })
     }
   },
 
   computed: {
-    currentCategory() {
-      if (this.$route.params.id) {
-        const category = this.$store.getters.currentCategory || {}
-        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-        this.imagePreview = category.imageSrc
-        return category
-      } else {
-        return {}
-      }
-    }
+    ...mapGetters([
+      'currentCategory'
+    ])
   },
+
   methods: {
+    ...mapActions([
+      'getCategoryById',
+      'createCategory',
+      'updateCategory',
+      'removeCategory'
+    ]),
+    ...mapMutations([
+      'setCategoryById'
+    ]),
     onSubmit() {
       const category = {
         name: this.currName,
@@ -145,14 +148,12 @@ export default {
         id: this.id
       }
       if (this.isNew) {
-        this.$store.dispatch('createCategory', category)
-          .then(() => {
+        this.createCategory(category).then(() => {
             this.$router.push('/categories')
-            material.toast('Категория создана')
+            material.toast('Category has been created')
           })
       } else {
-        this.$store.dispatch('updateCategory', category)
-          .then(() => material.toast('Изменения сохранены'))
+        this.updateCategory(category).then(() => material.toast('Changes has been saved'))
       }
     },
     triggerClick() {
@@ -168,10 +169,9 @@ export default {
       reader.readAsDataURL(file)
     },
     deleteCategory() {
-      const decision = window.confirm(`Вы уверены, что хотите удалить категорию ${this.currName}`)
-      if(decision) {
-        this.$store.dispatch('deleteCategory', this.id)
-          .then(() => this.$router.push('/categories'))
+      const decision = window.confirm(`Are you sure you want to delete the category ${this.currName}`)
+      if (decision) {
+        this.removeCategory(this.id).then(() => this.$router.push('/categories'))
       }
     }
   }
@@ -180,10 +180,10 @@ export default {
 
 
 <style>
-    .dn {
-        display: none;
-    }
-    .h200 {
-        height: 200px;
-    }
+  .dn {
+    display: none;
+  }
+  .h200 {
+    height: 200px;
+  }
 </style>

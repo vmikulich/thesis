@@ -1,4 +1,5 @@
 import axios from 'axios'
+import categoriesService from '../services/category/index'
 
 export default {
   state: {
@@ -7,42 +8,52 @@ export default {
   },
 
   actions: {
-    getCategories(context) {
-      context.commit('setLoading', true);
-      axios.get(`http://localhost:5000/api/category`).then(res => {
-        context.commit("setCategories", res.data)
-        context.commit('setLoading', false)
-      });
+    async getCategories({ commit }) {
+      commit('setLoading', true)
+      const res = await categoriesService.get(axios)
+      commit('setCategories', res)
+      commit('setLoading', false)
+      // axios.get(`http://localhost:5000/api/category`).then(res => {
+      //   context.commit("setCategories", res.data)
+      //   context.commit('setLoading', false)
+      // })
     },
-    getCategoryById(context, payload) {
-      axios.get(`http://localhost:5000/api/category/${payload}`)
-        .then(res => {
-          context.commit("setCategoryById", res.data)
-        });
+    async getCategoryById({ commit }, payload) {
+      const res = await categoriesService.getById(axios, { id: payload })
+      commit('setCategoryById', res)
+      // axios.get(`http://localhost:5000/api/category/${payload}`)
+      //   .then(res => {
+      //     context.commit("setCategoryById", res.data)
+      //   });
     },
-    createCategory(context, payload) {
-      context.commit('setLoading', true)
+    async createCategory({ commit }, payload) {
+      commit('setLoading', true)
       const fd = new FormData()
       if (payload.imageSrc) {
         fd.append('image', payload.imageSrc, payload.imageSrc.name)
       }
       fd.append('name', payload.name)
-      axios.post(`http://localhost:5000/api/category`, fd)
-        .then((res) => {
-          context.commit("adCategory", res.data)
-          context.commit('setLoading', false)
-        })
+      const res = await categoriesService.create(axios, fd)
+      commit('adCategory', res)
+      commit('setLoading', false)
+      // axios.post(`http://localhost:5000/api/category`, fd)
+      //   .then((res) => {
+      //     context.commit("adCategory", res.data)
+      //     context.commit('setLoading', false)
+      //   })
     },
-    updateCategory(context, payload) {
+    async updateCategory(context, payload) {
       const fd = new FormData()
       if (payload.imageSrc) {
         fd.append('image', payload.imageSrc, payload.imageSrc.name)
       }
       fd.append('name', payload.name)
-      axios.patch(`http://localhost:5000/api/category/${payload.id}`, fd)
+      await categoriesService.update(axios, { data: fd, id: payload.id })
+      // axios.patch(`http://localhost:5000/api/category/${payload.id}`, fd)
     },
-    deleteCategory(context, payload) {
-      return axios.delete(`http://localhost:5000/api/category/${payload}`)
+    async removeCategory(context, payload) {
+      await categoriesService.remove(axios, { id: payload })
+      // return axios.delete(`http://localhost:5000/api/category/${payload}`)
     }
   },
 
