@@ -87,7 +87,6 @@ import { mapGetters, mapActions, mapMutations } from 'vuex'
 import { required } from 'vuelidate/lib/validators'
 import material from '../Materialize/material.js'
 import Loader from './Loader'
-import M from 'materialize-css/dist/js/materialize.js'
 
 export default {
   name: 'Position',
@@ -125,7 +124,7 @@ export default {
   },
 
   mounted() {
-    this.modal = this.initModal()
+    this.modal = material.initModal(this.$refs.modal)
     this.getPositions(this.categoryId)
   },
 
@@ -144,9 +143,6 @@ export default {
     ...mapMutations([
       'setCategoryPositions'
     ]),
-    initModal() {
-      return M.Modal.init(this.$refs.modal)
-    },
     onSelectPosition(position) {
       setTimeout(() => {
         material.updateTextFields()

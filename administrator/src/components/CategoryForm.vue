@@ -107,7 +107,7 @@ export default {
     }
   },
 
-  beforeDestroy(){
+  beforeDestroy (){
     this.setCategoryById(null)
   },
 

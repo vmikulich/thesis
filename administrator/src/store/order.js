@@ -3,9 +3,15 @@ import orderService from '../services/order/index'
 
 export default {
   state: {
+    orders: [],
     order: []
   },
   actions: {
+    async fetchOrders ({ commit }, payload) {
+      const res = await orderService.fetch(axios, payload)
+      commit('setOrders', res)
+      return res
+    },
     async createOrder ({ commit }, payload) {
       await orderService.create(axios, payload)
       commit('clearOrder')
@@ -13,6 +19,9 @@ export default {
   },
 
   mutations: {
+    setOrders (state, payload) {
+      state.orders = state.orders.concat(payload)
+    },
     addProduct (state, payload) {
       const orderItem = Object.assign({}, {
         name: payload.name,
@@ -39,6 +48,9 @@ export default {
   getters: {
     order (state) {
       return state.order
+    },
+    orders (state) {
+      return state.orders
     }
   }
 }

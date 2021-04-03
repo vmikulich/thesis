@@ -77,7 +77,6 @@
 
 <script>
 import { mapGetters, mapMutations, mapActions } from 'vuex'
-import M from 'materialize-css/dist/js/materialize.js'
 import material from '../../Materialize/material'
 
 export default {
@@ -101,7 +100,7 @@ export default {
   },
 
   mounted() {
-    this.modal = this.initModal()
+    this.modal = material.initModal(this.$refs.modal)
   },
 
   beforeDestroy(){
@@ -115,9 +114,6 @@ export default {
     ...mapMutations([
       'removeProduct'
     ]),
-    initModal() {
-      return M.Modal.init(this.$refs.modal)
-    },
     openModal () {
       this.modal.open()
     },
