@@ -5,21 +5,18 @@
       <li
         v-for="(link, index) in links"
         :key="index"
+        :class="{ active: isActiveLink(link.path) }"
       >
         <router-link 
-          exact
-          active-class="active"
           :to="link.path"
           class="waves-effect waves-orange bold"
+          exact
           >
             {{ link.name }}
         </router-link>
       </li>
-      <li
-        class="waves-effect waves-orange bold last"
-        @click="onLogOut"
-      >
-        <a>Log out</a>
+      <li @click="onLogOut">
+        <a class="waves-effect waves-orange bold last">Log out</a>
       </li>
     </ul>
     <main class="content">
@@ -65,6 +62,9 @@ export default {
     ]),
     onLogOut () {
       this.logout().then(() => this.$router.push('/login'))
+    },
+    isActiveLink (path) {
+      return this.$route.path === path
     }
   }
 }

@@ -47,12 +47,17 @@ export default {
   },
 
   mounted () {
-    this.getCategories()
+    this.getCategories().catch((e) => {
+      if (e === 'Unauthorized') {
+        this.logout().then(() => this.$router.push('/login'))
+      }
+    })
   },
 
   methods: {
     ...mapActions([
-      'getCategories'
+      'getCategories',
+      'logout'
     ])
   }
 }

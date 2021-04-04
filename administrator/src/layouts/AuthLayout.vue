@@ -9,7 +9,7 @@
           Newborn
         </router-link>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
-          <li>
+          <li :class="{ active: isActiveLink('/login') }">
             <router-link
               to="/login"
               exact-active-class="active"
@@ -18,7 +18,7 @@
               Log in
             </router-link>
           </li>
-          <li>
+          <li :class="{ active: isActiveLink('/signup') }">
             <router-link
               to="/signup"
               exact-active-class="active"
@@ -38,6 +38,11 @@
 
 <script>
 export default {
+  methods: {
+    isActiveLink (path) {
+      return this.$route.path === path
+    }
+  }
 }
 </script>
 
