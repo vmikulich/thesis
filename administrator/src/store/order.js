@@ -20,7 +20,11 @@ export default {
 
   mutations: {
     setOrders (state, payload) {
-      state.orders = state.orders.concat(payload)
+      if (payload === null) {
+        state.orders = []
+      } else {
+        state.orders = state.orders.concat(payload)
+      }
     },
     addProduct (state, payload) {
       const orderItem = Object.assign({}, {

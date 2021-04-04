@@ -19,21 +19,30 @@
           :key="order.id"
         >
           <td>{{ order.order }}</td>
-          <td>{{ order.date }}</td>
-          <td>{{ order.date }}</td>
+          <td>{{ defineDate(order.date, 'DD.MM.YYYY') }}</td>
+          <td>{{ defineDate(order.date, 'LTS') }}</td>
           <td>{{ totalOrderPrice(order.list) }} $</td>
           <td>
-            <button class="btn btn-small grey darken-1">
+            <button
+              class="btn btn-small grey darken-1"
+              @click="infoModalHandler(order)"
+            >
               <i class="material-icons">open_in_new</i>
             </button>
           </td>
         </tr>
       </tbody>
     </table>
-    <div v-else class="center">You don't have any categories</div>
-    <div class="modal modal-fixed-footer">
-      <div class="modal-content">
-        <h4 class="mb1">Order №5</h4>
+    <div v-else class="center">No orders yet.</div>
+    <div
+      ref="modal"
+      class="modal modal-fixed-footer"
+    >
+      <div
+        v-if="selectedOrder"
+        class="modal-content"
+      >
+        <h4 class="mb1">Order №{{ selectedOrder.order }}</h4>
         <table class="highlight">
           <thead>
             <tr>
@@ -43,37 +52,69 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Alvin</td>
-              <td>3</td>
-              <td>$0.87</td>
+            <tr
+              v-for="item in selectedOrder.list"
+              :key="item._id"
+            >
+              <td>{{ item.name }}</td>
+              <td>{{ item.quantity }}</td>
+              <td>{{ item.cost }} $</td>
             </tr>
           </tbody>
         </table>
         <div class="order-summary">
-          <p>Total cost <strong>0 $</strong></p>
+          <p>Total cost <strong>{{ totalOrderPrice(selectedOrder.list) }} $</strong></p>
         </div>
       </div>
       <div class="modal-footer">
-        <button class="modal-action waves-effect waves-black btn-flat">Close</button>
+        <button
+          class="modal-action waves-effect waves-black btn-flat"
+          @click="infoModalHandler(null)"
+        >
+          Close
+        </button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import moment from 'moment'
 import { mapGetters } from 'vuex'
+import material from '../../Materialize/material'
 
 export default {
+  data () {
+    return {
+      modal: null,
+      selectedOrder: null
+    }
+  },
+
   computed: {
     ...mapGetters([
       'orders'
     ])
   },
 
+  mounted () {
+    this.modal = material.initModal(this.$refs.modal)
+  },
+
+  beforeDestroy () {
+    this.modal.destroy()
+  },
+
   methods: {
     totalOrderPrice (order) {
-      return order.reduce((acc, cur) => acc + cur.cost * cur.quantity, 0)
+      return order ? order.reduce((acc, cur) => acc + cur.cost * cur.quantity, 0) : ''
+    },
+    defineDate (date, format) {
+      return moment(date).format(format)
+    },
+    infoModalHandler (order) {
+      order ? this.modal.open() : this.modal.close()
+      this.selectedOrder = order
     }
   }
 }

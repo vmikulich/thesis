@@ -12,6 +12,13 @@ const Material = {
   },
   initTooltip (elem) {
     return M.Tooltip.init(elem)
+  },
+  initDatepicker (elem, onClose) {
+    return M.Datepicker.init(elem, {
+      format: 'dd.mm.yyyy',
+      showClearBtn: true,
+      onClose
+    })
   }
 }
 

@@ -123,12 +123,12 @@ export default {
     }
   },
 
-  mounted() {
+  mounted () {
     this.modal = material.initModal(this.$refs.modal)
     this.getPositions(this.categoryId)
   },
 
-  beforeDestroy(){
+  beforeDestroy () {
     this.modal.destroy()
     this.setCategoryPositions([])
   },

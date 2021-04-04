@@ -3,9 +3,12 @@
     <div class="page-title">
       <h4>History of orders</h4>
       <button
-        v-if="!loading"
         ref="tooltip"
-        :class="`btn btn-small ${buttonActiveClass}`"
+        class="btn btn-small"
+        :class="{
+          active: isFilterVisible,
+          red: isFiltered
+        }"
         data-tooltip="Open filter"
         data-position="left"
         @click="filterStatusHandler"
@@ -13,11 +16,12 @@
         <i class="material-icons">filter_list</i>
       </button>
     </div>
+    <HistoryFilter
+      v-if="isFilterVisible"
+      @filter="applyFilter"
+    />
     <Loader v-if="loading" />
     <div v-else>
-      <HistoryFilter
-        v-if="isFilterVisible"
-      />
       <HistoryList />
       <Loader v-if="loadMoreStatus" />
       <div
@@ -32,7 +36,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapMutations } from 'vuex'
 import HistoryList from './HistoryList'
 import HistoryFilter from './HistoryFilter'
 import Loader from '../Loader'
@@ -49,7 +53,8 @@ export default {
       loading: false,
       step: 5,
       offset: 0,
-      noMoreOrders: false
+      noMoreOrders: false,
+      isFiltered: false
     }
   },
 
@@ -65,17 +70,26 @@ export default {
       offset: this.offset,
       limit: this.step
     }
-    this.fetchOrders(data).finally(() => this.loading = false)
+    this.fetchOrders(data).catch((e) => {
+      if (e === 'Unauthorized') {
+        this.logout().then(() => this.$router.push('/login'))
+      }
+    }).finally(() => this.loading = false)
     this.tooltip = material.initTooltip(this.$refs.tooltip)
   },
 
   beforeDestroy () {
     this.tooltip.destroy()
+    this.setOrders(null)
   },
 
   methods: {
+    ...mapMutations([
+      'setOrders'
+    ]),
     ...mapActions([
-      'fetchOrders'
+      'fetchOrders',
+      'logout'
     ]),
     filterStatusHandler () {
       this.isFilterVisible = !this.isFilterVisible
@@ -91,6 +105,21 @@ export default {
         this.noMoreOrders = res.length < this.step
       }).finally(() => {
         this.loadMoreStatus = false
+      })
+    },
+    applyFilter (filter) {
+      this.setOrders(null)
+      this.offset = 0
+      this.loading = true
+      this.isFiltered = Object.keys(filter).length !== 0
+      const data = Object.assign({}, filter, {
+        offset: this.offset,
+        limit: this.step
+      })
+      this.fetchOrders(data).then((res) => {
+        this.noMoreOrders = res.length < this.step
+      }).finally(() => {
+        this.loading = false
       })
     }
   }

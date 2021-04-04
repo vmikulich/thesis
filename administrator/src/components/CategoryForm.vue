@@ -117,11 +117,15 @@ export default {
         material.updateTextFields()
       }, 500)
       this.getCategoryById(this.id).then(() => {
-          this.currName = this.currentCategory.name
-          if (this.currentCategory.imageSrc) {
-            this.imagePreview = 'http://localhost:5000/' + this.currentCategory.imageSrc
-          }
-        })
+        this.currName = this.currentCategory.name
+        if (this.currentCategory.imageSrc) {
+          this.imagePreview = 'http://localhost:5000/' + this.currentCategory.imageSrc
+        }
+      }).catch((e) => {
+        if (e === 'Unauthorized') {
+          this.logout().then(() => this.$router.push('/login'))
+        }
+      })
     }
   },
 
