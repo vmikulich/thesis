@@ -4,7 +4,7 @@
       <h4>
         <router-link to="/categories">Categories</router-link>
         <i class="material-icons">keyboard_arrow_right</i>
-        {{isNew ? 'Add' : 'Create'}} category
+        {{isNew ? 'Create' : 'Edit'}} category
       </h4>
       <span>
         <button 

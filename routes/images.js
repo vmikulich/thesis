@@ -9,6 +9,4 @@ router.delete('/:id', controller.remove);
 router.post('/', upload.single('image'), controller.create);
 router.patch('/:id', upload.single('image'), controller.update);
 
-//router.get('/')
-
 module.exports = router;

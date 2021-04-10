@@ -19,6 +19,9 @@ const Material = {
       showClearBtn: true,
       onClose
     })
+  },
+  initTapTarget (elem) {
+    return M.TapTarget.init(elem)
   }
 }
 

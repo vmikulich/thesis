@@ -22,6 +22,7 @@
     <main class="content">
       <router-view />
     </main>
+    <a id="menu" class="waves-effect waves-light btn btn-floating"><i class="material-icons">info</i></a>
   </div>
 </template>
 

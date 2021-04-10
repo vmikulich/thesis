@@ -6,6 +6,7 @@ export default {
     orders: [],
     order: []
   },
+
   actions: {
     async fetchOrders ({ commit }, payload) {
       const res = await orderService.fetch(axios, payload)

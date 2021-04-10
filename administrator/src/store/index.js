@@ -5,6 +5,7 @@ import category from './category'
 import position from './position'
 import auth from './auth'
 import order from './order'
+import analytics from './analytics'
 
 Vue.use(Vuex)
 
@@ -14,6 +15,7 @@ export default new Vuex.Store({
     category,
     position,
     auth,
-    order
+    order,
+    analytics
   }
 })
